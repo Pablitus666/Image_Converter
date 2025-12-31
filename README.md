@@ -83,36 +83,40 @@ La aplicación incluye:
 
 ## 🚀 Instalación y uso
 
-### 🔹 Opción 1 — Ejecutar desde el código fuente
+### ⭐ Opción 1 — Ejecutar desde el Release (RECOMENDADO)
 
-1. Clona el repositorio:
+1. Ve a la sección **Releases** del repositorio.
+2. Descarga el archivo:
 
-   ```bash
-   git clone https://github.com/tu-usuario/image-converter.git
-   cd image-converter
    ```
-
-2. Instala las dependencias necesarias:
-
-   ```bash
-   pip install pillow
+   ImageConverter_v1.0.0_Windows.zip
    ```
+3. Extrae el contenido del archivo `.zip`.
+4. Ejecuta **ImageConverter.exe**.
 
-3. Ejecuta la aplicación:
-
-   ```bash
-   python main.py
-   ```
+> ⚠️ Windows puede mostrar una advertencia de seguridad al ser una aplicación no firmada.
+> Selecciona **“Más información” → “Ejecutar de todas formas”**.
 
 ---
 
-### 🔹 Opción 2 — Crear ejecutable con PyInstaller
+### 🔹 Opción 2 — Ejecutar desde el código fuente
+
+```bash
+git clone https://github.com/tu-usuario/image-converter.git
+cd image-converter
+pip install pillow
+python main.py
+```
+
+---
+
+### 🔹 Opción 3 — Crear ejecutable con PyInstaller
 
 ```bash
 pyinstaller --onefile --windowed --add-data "images;images" main.py
 ```
 
-> El método `resource_path()` garantiza compatibilidad tanto en entorno de desarrollo como en el ejecutable final.
+> El método `resource_path()` garantiza compatibilidad tanto en desarrollo como en el ejecutable final.
 
 ---
 

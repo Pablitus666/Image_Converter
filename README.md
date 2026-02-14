@@ -21,54 +21,42 @@ Aplicación de escritorio profesional para **convertir imágenes entre distintos
 ## ✨ Características principales
 
 * 🎯 **Conversión rápida y confiable de imágenes**
-
-  * Conversión entre formatos comunes de imagen de forma segura.
+  * Soporta formatos comunes de imagen de forma segura.
 
 * 🖱️ **Drag & Drop intuitivo**
-
   * Arrastra imágenes directamente a la aplicación.
   * Estados visuales claros durante la conversión.
 
 * 🧠 **Validación inteligente de archivos**
-
   * Rechazo automático de archivos no compatibles.
   * Solo se procesan imágenes válidas.
 
 * 🚫 **Protección contra errores comunes**
-
   * Manejo controlado de excepciones.
   * Mensajes claros y comprensibles para el usuario.
 
 * 🌍 **Internacionalización (i18n)**
-
   * Sistema de traducciones basado en JSON.
   * Idioma por defecto: Español (extensible).
 
 * 🖼️ **UI optimizada para HiDPI**
-
   * Conciencia de DPI en Windows.
   * Interfaz preparada para pantallas de alta resolución.
 
 * 🧩 **Arquitectura modular**
-
   * Separación clara entre UI, controladores y lógica de conversión.
   * Código mantenible y escalable.
 
 * 📂 **Acceso rápido a resultados**
-
   * Apertura directa de la carpeta de salida.
 
 * 📝 **Logging interno**
-
   * Registro de eventos y errores para depuración.
 
-* 📦 Ejecutable `.exe` **portable**
-
-* 🧩 Runtime embebido (PyInstaller one-file)
-
-* 🔐 Ejecutable **firmado digitalmente**
-
-* 🪟 Compatible con Windows 10 / 11
+* 🔐 **Ejecutable `.exe` firmado digitalmente**
+  * Compatible con Windows 10 / 11
+  * No requiere instalación de Python ni dependencias externas
+  * Drag & Drop completamente funcional
 
 ---
 
@@ -143,8 +131,17 @@ El proyecto se distribuye como **ejecutable portable para Windows**.
 * ✅ Portable
 * ✅ Listo para usar
 
-⬇️ El ejecutable se publica en la sección **Releases** del repositorio.
+⬇️ El ejecutable se publica en la sección **Releases** del repositorio, dentro de un archivo ZIP que contiene:
 
+```
+Image_Converter_Setup.exe
+
+README.txt con instrucciones básicas de instalación
+
+```
+⚠️ Nota: Este ejecutable NO es portable, debe instalarse mediante el instalador.
+
+---
 ---
 
 ## 🛠️ Información de compilación

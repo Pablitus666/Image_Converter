@@ -131,7 +131,7 @@ El proyecto se distribuye como **Instalador Windows Firmado**.
 * ✅ Portable
 * ✅ Listo para usar
 
-⬇️ El ejecutable se publica en la sección **Releases** del repositorio, dentro de un archivo ZIP que contiene:
+⬇️ El ejecutable se publica en la sección **[Releases](https://github.com/Pablitus666/Image_Converter/releases)** del repositorio, dentro de un archivo ZIP que contiene:
 
 ```
 Image_Converter_Setup.exe

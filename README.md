@@ -121,7 +121,7 @@ python main.py
 
 ### Opción 2: Ejecutable (.exe) – recomendado
 
-El proyecto se distribuye como **ejecutable portable para Windows**.
+El proyecto se distribuye como **Instalador Windows Firmado**.
 
 #### Ventajas
 

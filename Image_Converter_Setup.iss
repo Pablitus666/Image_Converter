@@ -26,8 +26,8 @@ OutputBaseFilename=Image_Converter_Setup
 Compression=lzma2
 SolidCompression=yes
 
-ArchitecturesAllowed=x64
-ArchitecturesInstallIn64BitMode=x64
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
 
 PrivilegesRequired=admin
 WizardStyle=modern
@@ -44,10 +44,9 @@ Name: ImageConverterSign; Command: "C:\Program Files (x86)\Windows Kits\10\bin\1
 [Files]
 Source: "{#DistDir}\Image_Converter.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DistDir}\_internal\*"; DestDir: "{app}\_internal"; Flags: recursesubdirs createallsubdirs ignoreversion
-Source: "README.md"; DestDir: "{app}"; Flags: ignoreversion
-Source: "RELEASE_DESCRIPTION.md"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
+Name: "{autodesktop}\Image Converter"; Filename: "{app}\Image_Converter.exe"
 Name: "{group}\Image Converter"; Filename: "{app}\Image_Converter.exe"
 Name: "{group}\Desinstalar Image Converter"; Filename: "{uninstallexe}"
 

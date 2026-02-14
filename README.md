@@ -145,7 +145,7 @@ El proyecto se distribuye como **Instalador Windows firmado**, listo para instal
 4. Al finalizar, encontrarás un **acceso directo en tu escritorio** para iniciar la aplicación.  
 5. ¡Listo! La aplicación está instalada y lista para usar.
 
-> ⚠️ Nota: Este **instalador no es portable**. Es necesario ejecutar el asistente de instalación para que la aplicación funcione correctamente y se creen el acceso directo de la Aplicación en el escritorio.
+> ⚠️ Nota: Este **instalador no es portable**. Es necesario ejecutar el asistente de instalación para que la aplicación funcione correctamente y se cree el acceso directo de la Aplicación en el escritorio.
 
 ---
 

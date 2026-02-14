@@ -119,29 +119,34 @@ python main.py
 
 ---
 
-### Opción 2: Ejecutable (.exe) – recomendado
+### Opción 2: Instalador Windows (.exe) – recomendado
 
-El proyecto se distribuye como **Instalador Windows Firmado**.
+El proyecto se distribuye como **Instalador Windows firmado**, listo para instalar en el sistema.
 
 #### Ventajas
 
 * ✅ No requiere Python instalado
-* ✅ Drag & Drop funcional
+* ✅ Drag & Drop funcional tras la instalación
 * ✅ Assets incluidos
-* ✅ Portable
-* ✅ Listo para usar
+* ✅ Instalación sencilla mediante asistente
+* ✅ Crea un **acceso directo en el escritorio**
+* ✅ Listo para usar inmediatamente tras la instalación
 
-⬇️ El ejecutable se publica en la sección **[Releases](https://github.com/Pablitus666/Image_Converter/releases)** del repositorio, dentro de un archivo ZIP que contiene:
+⬇️ El instalador se publica en la sección **[Releases](https://github.com/Pablitus666/Image_Converter/releases)** del repositorio, dentro de un archivo ZIP que contiene:
 
-```
-Image_Converter_Setup.exe
+* `Image_Converter_Setup.exe` – Instalador Windows firmado  
+* `README.txt` – Instrucciones básicas de instalación
 
-README.txt con instrucciones básicas de instalación
+#### Instrucciones para el usuario final
 
-```
-⚠️ Nota: Este ejecutable NO es portable, debe instalarse mediante el instalador.
+1. Descargar el archivo ZIP desde la sección **Releases**.  
+2. Extraer su contenido a una carpeta temporal.  
+3. Ejecutar `Image_Converter_Setup.exe` y seguir las indicaciones del instalador.  
+4. Al finalizar, encontrarás un **acceso directo en tu escritorio** para iniciar la aplicación.  
+5. ¡Listo! La aplicación está instalada y lista para usar.
 
----
+> ⚠️ Nota: Este **instalador no es portable**. Es necesario ejecutar el asistente de instalación para que la aplicación funcione correctamente y se creen el acceso directo de la Aplicación en el escritorio.
+
 ---
 
 ## 🛠️ Información de compilación

@@ -239,10 +239,10 @@ El ejecutable distribuido está **firmado digitalmente**, lo que garantiza:
 
 ## 👨‍💻 Autor
 
-**Pablo Téllez** <img src="https://flagcdn.com/w20/bo.png" width="20"/>  
+**Pablo Téllez**  
 Desarrollador de Software  
 
-📍 Tarija, Bolivia  
+📍 Tarija, Bolivia <img src="https://flagcdn.com/w20/bo.png" width="20"/> 
 📧 [pharmakoz@gmail.com](mailto:pharmakoz@gmail.com) 
 
 © 2026 — Image Converter

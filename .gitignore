@@ -12,3 +12,19 @@ Thumbs.db
 dist/
 build/
 *.spec
+
+# Installer artifacts
+dist_installer/*.exe
+dist_installer/*.rar
+dist_installer/*.zip
+
+# Certificates and private keys
+*.pfx
+*.cer
+
+# Compiled executables
+*.exe
+
+# Compressed files
+*.rar
+*.zip

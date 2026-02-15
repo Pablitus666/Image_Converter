@@ -4,6 +4,7 @@ from tkinterdnd2 import DND_FILES, TkinterDnD
 from PIL import Image, ImageTk, UnidentifiedImageError
 
 import os
+import threading
 
 from config import constants
 from core.resources import image_path
@@ -34,7 +35,10 @@ class ImageConverterApp(TkinterDnD.Tk):
         self.info_window = None
         self.last_directory = "."
         self.ui_locked = False
-        # self.is_converting = False # Removed, state is now in controller
+        
+        # --- Threading State for Preview Loading ---
+        self.preview_thread_lock = threading.Lock()
+        self.is_loading_preview = False
 
         self.format_var = StringVar(self)
         self.format_var.set(constants.OUTPUT_FORMATS[0])
@@ -231,37 +235,89 @@ class ImageConverterApp(TkinterDnD.Tk):
 
     def set_image(self, path: str):
         """
-        Asigna la ruta de la imagen y genera la vista previa.
+        Inicia el proceso de carga de la vista previa en un hilo separado
+        para no bloquear la interfaz de usuario.
         """
+        with self.preview_thread_lock:
+            if self.is_loading_preview:
+                return  # Ya hay una carga en curso
+
         if not self._is_valid_image_extension(path):
             self.show_warning_window(_("error.unsupported_image_extension"))
             return
 
         self.image_path = path
-        self._load_preview(path)
+        self._set_ui_locked(True) # Bloquear UI al iniciar carga
+        self.status_label.config(text=_("Cargando imagen..."))
+        
+        with self.preview_thread_lock:
+            self.is_loading_preview = True
 
-    def _load_preview(self, path: str):
+        # Iniciar el worker en un hilo daemon
+        thread = threading.Thread(
+            target=self._load_preview_worker,
+            args=(path,),
+            daemon=True
+        )
+        thread.start()
+
+    def _load_preview_worker(self, path: str):
         """
-        Carga una imagen únicamente para vista previa (sin retener PIL objects).
+        Worker que se ejecuta en un hilo separado para cargar y procesar
+        la imagen para la vista previa.
         """
+        img = None
         try:
-            self.status_label.config(text=_("Cargando imagen..."))
-            self.update_idletasks()
+            # Abrir la imagen. La protección contra DecompressionBomb se confía
+            # a la configuración global de Image.MAX_IMAGE_PIXELS.
+            img = Image.open(path)
 
-            with Image.open(path) as img:
-                img.thumbnail((250, 250), Image.Resampling.LANCZOS)
-                self.preview_img = ImageTk.PhotoImage(img)
+            if img.format == 'JPEG':
+                img.draft('thumbnails', (250, 250))
 
-            self.drop_area.config(image=self.preview_img, text="")
-            self.status_label.config(text=_("Imagen cargada correctamente ✅"))
+            img.thumbnail((250, 250), Image.Resampling.LANCZOS)
+            
+            # Crear el objeto PhotoImage aquí, que puede ser tardado
+            preview_photo = ImageTk.PhotoImage(img)
+
+            # Si todo fue exitoso, programar la actualización de la UI en el hilo principal
+            self.after(0, self._update_preview_ui, preview_photo)
 
         except (IOError, UnidentifiedImageError):
-            self.clear_image()
-            self.show_warning_window(_("error.invalid_image_or_corrupt"))
-
+            self.after(0, self._on_preview_error, _("error.invalid_image_or_corrupt"))
+        
         except Exception as e:
-            self.clear_image()
-            self.show_warning_window(f'{_("error.unexpected_image_load")}\n{e}')
+            error_message = f'{_("error.unexpected_image_load")}\n{e}'
+            self.after(0, self._on_preview_error, error_message)
+
+        finally:
+            if img:
+                img.close()
+            with self.preview_thread_lock:
+                self.is_loading_preview = False
+
+    def _update_preview_ui(self, preview_photo):
+        """
+        Callback para actualizar la UI con la nueva vista previa.
+        Se ejecuta en el hilo principal.
+        """
+        self.preview_img = preview_photo
+        self.drop_area.config(image=self.preview_img, text="")
+        self.status_label.config(text=_("Imagen cargada correctamente ✅"))
+        self._set_ui_locked(False) # Desbloquear UI al finalizar
+
+    def _on_preview_error(self, message: str):
+        """
+        Callback para manejar errores durante la carga de la vista previa.
+        Se ejecuta en el hilo principal.
+        """
+        # Inlined from clear_image to bypass the ui_locked check
+        self.image_path = None
+        self.preview_img = None
+        self.reset_drop_area_ui()
+        self.show_warning_window(message)
+        self.status_label.config(text=_("Error al cargar la imagen"))
+        self._set_ui_locked(False) # Desbloquear UI en caso de error
 
     def clear_image(self, event=None):
         if self.ui_locked: return

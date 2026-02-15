@@ -9,11 +9,74 @@ from core.errors import (
     UnsupportedFormatError,
     InvalidImageError,
 )
+from core.image_processor import open_and_resize_if_needed
 
 # -------------------------------------------------------------------
 # Constantes de formato (importadas)
 # -------------------------------------------------------------------
 from config.constants import FORMAT_MAPPING
+
+
+def _save_with_format_settings(img: Image.Image, output_path: str, output_format: str):
+    """
+    Guarda la imagen con configuraciones de compresión optimizadas
+    según el formato de salida.
+    """
+    output_format = output_format.upper()
+    # PIL usa 'JPEG' para archivos .jpg
+    save_format = "JPEG" if output_format == "JPG" else output_format
+
+    save_options = {}
+
+    # --- Preparar imagen y opciones según el formato ---
+
+    if output_format in ("JPEG", "JPG"):
+        # Convertir a RGB si tiene canal alfa para evitar errores en JPEG
+        if img.mode in ("RGBA", "LA", "P"):
+            img = img.convert("RGB")
+        save_options = {
+            "quality": 85,
+            "optimize": True,
+            "progressive": True
+        }
+
+    elif output_format == "PNG":
+        save_options = {
+            "optimize": True,
+            "compress_level": 9  # Máxima compresión sin pérdida
+        }
+
+    elif output_format == "WEBP":
+        save_options = {
+            "quality": 85,
+            "method": 6  # Mejor compresión (más lento)
+        }
+
+    elif output_format == "ICO":
+        # El formato ICO necesita un modo que soporte transparencia
+        if img.mode != "RGBA":
+            img = img.convert("RGBA")
+        save_options = {
+            "sizes": constants.ICON_SIZES
+        }
+    
+    elif output_format == "BMP":
+        if img.mode in ("RGBA", "LA", "P"):
+            img = img.convert("RGB")
+
+    # --- Guardado ---
+    try:
+        img.save(output_path, format=save_format, **save_options)
+    except OSError as e:
+        raise FileWriteError(
+            f"Error del sistema de archivos al guardar la imagen: {e}"
+        ) from e
+    except Exception as e:
+        raise FileWriteError(
+            f"Error inesperado al guardar la imagen convertida: {e}"
+        ) from e
+
+
 
 
 def convert_image(source_path: str, target_format: str) -> str:
@@ -36,14 +99,20 @@ def convert_image(source_path: str, target_format: str) -> str:
             f"El formato de salida '{target_format}' no está soportado."
         )
 
+    img = None  # Inicializar para asegurar que exista en el bloque finally
     try:
-        with Image.open(source_path) as img:
-            original_format = (img.format or "").upper()
-            image = img.copy()
+        # Usa la nueva función para abrir y redimensionar si es necesario
+        img = open_and_resize_if_needed(source_path)
+        original_format = (img.format or "").upper()
+        image = img.copy()
     except (IOError, UnidentifiedImageError) as e:
         raise InvalidImageError(
             f"No se pudo abrir la imagen '{source_path}': {e}"
         ) from e
+    finally:
+        # Cerrar el manejador del archivo de la imagen original si se abrió
+        if img:
+            img.close()
 
     target_pil_format = FORMAT_MAPPING[normalized_target]
 
@@ -70,58 +139,20 @@ def convert_image(source_path: str, target_format: str) -> str:
         output_path = f"{output_path_base}_{counter}.{output_ext}"
 
     # ----------------------------------------------------------------
-    # Procesamiento de imagen
+    # Procesamiento y Guardado
     # ----------------------------------------------------------------
 
+    # Transponer la imagen si tiene metadatos de orientación EXIF
     img_to_save = ImageOps.exif_transpose(image)
 
-    save_options = {}
+    # --- Redimensionado Condicional ---
+    # Si el formato destino es ICO, redimensionar a un tamaño estándar.
+    if normalized_target == "ICO":
+        # Usar LANCZOS para un redimensionado de alta calidad
+        img_to_save = img_to_save.resize((256, 256), Image.Resampling.LANCZOS)
 
-    # Formatos sin transparencia
-    if output_ext in ("jpeg", "jpg", "bmp"):
-        if img_to_save.mode in ("RGBA", "LA", "P"):
-            img_to_save = img_to_save.convert("RGB")
-
-        if output_ext in ("jpeg", "jpg"):
-            save_options = {
-                "quality": 90,
-                "subsampling": -1,
-            }
-
-    # PNG
-    elif output_ext == "png":
-        save_options = {"compress_level": 4}
-
-    # WEBP
-    elif output_ext == "webp":
-        save_options = {
-            "quality": 90,
-            "lossless": False,
-        }
-
-    # ICO
-    elif output_ext == "ico":
-        if img_to_save.mode != "RGBA":
-            img_to_save = img_to_save.convert("RGBA")
-
-        save_options = {
-            "sizes": constants.ICON_SIZES
-        }
-
-    # ----------------------------------------------------------------
-    # Guardado
-    # ----------------------------------------------------------------
-
-    try:
-        save_format = "jpeg" if output_ext == "jpg" else output_ext
-        img_to_save.save(output_path, format=save_format, **save_options)
-    except OSError as e:
-        raise FileWriteError(
-            f"Error del sistema de archivos al guardar la imagen: {e}"
-        ) from e
-    except Exception as e:
-        raise FileWriteError(
-            f"Error inesperado al guardar la imagen convertida: {e}"
-        ) from e
+    # --- Guardado Inteligente ---
+    # Usar la nueva función que aplica la compresión optimizada por formato
+    _save_with_format_settings(img_to_save, output_path, normalized_target)
 
     return output_path

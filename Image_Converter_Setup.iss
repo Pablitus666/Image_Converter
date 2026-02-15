@@ -7,7 +7,7 @@
 #define AppPublisher "Walter Pablo Tellez Ayala"
 #define AppExeName "Image_Converter.exe"
 
-#define DistDir "C:\Users\GAMT\Desktop\Proyecto Image_Converter\Image_Converter\dist\Image_Converter"
+#define DistDir "I:\Proyectos Finales Python\Proyecto Image_Converter\Image_Converter\dist\Image_Converter"
 #define CertPFX "C:\Users\GAMT\Desktop\Proyecto Image_Converter\Image_Converter\Image_Converter_Dev.pfx"
 
 [Setup]
@@ -45,8 +45,11 @@ Name: ImageConverterSign; Command: "C:\Program Files (x86)\Windows Kits\10\bin\1
 Source: "{#DistDir}\Image_Converter.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DistDir}\_internal\*"; DestDir: "{app}\_internal"; Flags: recursesubdirs createallsubdirs ignoreversion
 
+[Tasks]
+Name: "desktopicon"; Description: "Crear acceso directo en el escritorio"; GroupDescription: "Opciones adicionales:"; Flags: unchecked
+
 [Icons]
-Name: "{autodesktop}\Image Converter"; Filename: "{app}\Image_Converter.exe"
+Name: "{autodesktop}\Image Converter"; Filename: "{app}\Image_Converter.exe"; Tasks: desktopicon
 Name: "{group}\Image Converter"; Filename: "{app}\Image_Converter.exe"
 Name: "{group}\Desinstalar Image Converter"; Filename: "{uninstallexe}"
 

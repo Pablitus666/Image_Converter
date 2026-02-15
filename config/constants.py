@@ -35,7 +35,7 @@ FONT_POPUP_BOLD = (FONT_FAMILY_MAIN, FONT_SIZE_POPUP_BODY, "bold")
 
 # --- Ventana ---
 WINDOW_TITLE = "Image Converter"
-WINDOW_SIZE = "520x800" # Adjusted for more vertical space
+WINDOW_SIZE = "520x775" # Adjusted for more vertical space
 WARNING_POPUP_SIZE = "400x190"
 INFO_POPUP_SIZE = "370x230"
 

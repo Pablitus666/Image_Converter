@@ -23,6 +23,14 @@ Aplicación de escritorio profesional para **convertir imágenes entre distintos
 * 🎯 **Conversión rápida y confiable de imágenes**
   * Soporta formatos comunes de imagen de forma segura.
 
+* 🚀 **Manejo optimizado de imágenes gigantes**
+  * **Protección Anti-Crash:** Evita errores `DecompressionBomb` al procesar imágenes de muy alta resolución.
+  * **UI sin bloqueos:** La carga de la vista previa se ejecuta en un hilo separado, manteniendo la interfaz fluida y receptiva en todo momento.
+
+* ⚙️ **Procesamiento inteligente de imágenes**
+  * **Compresión optimizada:** Aplica configuraciones de compresión específicas para cada formato (JPEG progresivo, máxima compresión en PNG) para un equilibrio ideal entre calidad y peso.
+  * **Redimensionado condicional:** Ajusta automáticamente el tamaño de las imágenes para formatos con restricciones (ej. ICO a 256x256), manteniendo la máxima calidad en los demás.
+
 * 🖱️ **Drag & Drop intuitivo**
   * Arrastra imágenes directamente a la aplicación.
   * Estados visuales claros durante la conversión.
@@ -65,10 +73,11 @@ Aplicación de escritorio profesional para **convertir imágenes entre distintos
 ### ✅ Imágenes de entrada
 
 * `.png`
-* `.jpg`
-* `.jpeg`
+* `.jpg` / `.jpeg`
 * `.bmp`
 * `.webp`
+* `.gif` (conversión a otros formatos no permitida para evitar pérdida de animación)
+* `.ico` (conversión a otros formatos no permitida)
 
 ### ❌ Archivos rechazados
 
@@ -129,7 +138,7 @@ El proyecto se distribuye como **Instalador Windows firmado**, listo para instal
 * ✅ Drag & Drop funcional tras la instalación
 * ✅ Assets incluidos
 * ✅ Instalación sencilla mediante asistente
-* ✅ Crea un **acceso directo en el escritorio**
+* ✅ Ofrece **creación opcional** de acceso directo en el escritorio
 * ✅ Listo para usar inmediatamente tras la instalación
 
 ⬇️ El instalador se publica en la sección **[Releases](https://github.com/Pablitus666/Image_Converter/releases)** del repositorio, dentro de un archivo ZIP que contiene:
@@ -142,7 +151,7 @@ El proyecto se distribuye como **Instalador Windows firmado**, listo para instal
 1. Descargar el archivo ZIP desde la sección **Releases**.  
 2. Extraer su contenido a una carpeta temporal.  
 3. Ejecutar `Image_Converter_Setup.exe` y seguir las indicaciones del instalador.  
-4. Al finalizar, encontrarás un **acceso directo en tu escritorio** para iniciar la aplicación.  
+4. Durante la instalación, podrás decidir si deseas crear un acceso directo en el escritorio.
 5. ¡Listo! La aplicación está instalada y lista para usar.
 
 > ⚠️ Nota: Este **instalador no es portable**. Es necesario ejecutar el asistente de instalación para que la aplicación funcione correctamente y se cree el acceso directo de la Aplicación en el escritorio.
@@ -230,9 +239,13 @@ El ejecutable distribuido está **firmado digitalmente**, lo que garantiza:
 
 ## 👨‍💻 Autor
 
-**Pablo Téllez**
-📧 [pharmakoz@gmail.com](mailto:pharmakoz@gmail.com)
-📍 Tarija, Bolivia — 2026
+**Pablo Téllez** 🇧🇴  
+Desarrollador de Software  
+
+📍 Tarija, Bolivia  
+📧 [pharmakoz@gmail.com](mailto:pharmakoz@gmail.com) 
+
+© 2026 — Image Converter
 
 ---
 

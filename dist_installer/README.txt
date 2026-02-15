@@ -46,6 +46,7 @@ INSTALACIÓN
    - Luego en "Ejecutar de todas formas"
 
 3. Sigue los pasos del instalador.
+   - Marca la casilla "Crear acceso directo en el escritorio"
 
 4. Al finalizar, encontrarás:
    - Un acceso directo en el Escritorio

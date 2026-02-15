@@ -5,7 +5,7 @@ $ErrorActionPreference = "Stop"
 $certName    = "Image_Converter_Dev"
 $pfxPassword = "Condorito123*#*?"   # Cambia esto si deseas
 
-$exePath = "C:\Users\GAMT\Desktop\Proyecto Image_Converter\Image_Converter\dist\Image_Converter\Image_Converter.exe"
+$exePath = "I:\Proyectos Finales Python\Proyecto Image_Converter\Image_Converter\dist_installer\Image_Converter_Setup.exe"
 
 $pfxPath = "$PSScriptRoot\$certName.pfx"
 $cerPath = "$PSScriptRoot\$certName.cer"
@@ -44,44 +44,44 @@ function Get-Signtool {
 }
 
 # ================= LIMPIEZA =================
-
-Write-Host "[INFO] Eliminando certificados anteriores..." -ForegroundColor Cyan
-Get-ChildItem Cert:\CurrentUser\My |
-    Where-Object { $_.Subject -like "*CN=$certName*" } |
-    Remove-Item -ErrorAction SilentlyContinue
-
-Remove-Item $pfxPath, $cerPath -Force -ErrorAction SilentlyContinue
-
+#
+# Write-Host "[INFO] Eliminando certificados anteriores..." -ForegroundColor Cyan
+# Get-ChildItem Cert:\CurrentUser\My |
+#     Where-Object { $_.Subject -like "*CN=$certName*" } |
+#     Remove-Item -ErrorAction SilentlyContinue
+#
+# Remove-Item $pfxPath, $cerPath -Force -ErrorAction SilentlyContinue
+#
 # ================= CREAR CERTIFICADO =================
-
-Write-Host "[INFO] Creando certificado autofirmado..." -ForegroundColor Green
-$cert = New-SelfSignedCertificate `
-    -Type CodeSigningCert `
-    -Subject "CN=Walter Pablo Tellez Ayala, O=Image Converter, E=pharmakoz@gmail.com, C=BO" `
-    -KeyAlgorithm RSA `
-    -KeyLength 2048 `
-    -HashAlgorithm SHA256 `
-    -KeyExportPolicy Exportable `
-    -CertStoreLocation "Cert:\CurrentUser\My" `
-    -FriendlyName "Image Converter Code Signing Certificate" `
-    -NotAfter (Get-Date).AddYears(5)
-
+#
+# Write-Host "[INFO] Creando certificado autofirmado..." -ForegroundColor Green
+# $cert = New-SelfSignedCertificate `
+#     -Type CodeSigningCert `
+#     -Subject "CN=Walter Pablo Tellez Ayala, O=Image Converter, E=pharmakoz@gmail.com, C=BO" `
+#     -KeyAlgorithm RSA `
+#     -KeyLength 2048 `
+#     -HashAlgorithm SHA256 `
+#     -KeyExportPolicy Exportable `
+#     -CertStoreLocation "Cert:\CurrentUser\My" `
+#     -FriendlyName "Image Converter Code Signing Certificate" `
+#     -NotAfter (Get-Date).AddYears(5)
+#
 # ================= EXPORTAR =================
-
-Write-Host "[INFO] Exportando certificados..." -ForegroundColor Green
-$securePass = ConvertTo-SecureString $pfxPassword -AsPlainText -Force
-
-Export-PfxCertificate -Cert $cert -FilePath $pfxPath -Password $securePass | Out-Null
-Export-Certificate    -Cert $cert -FilePath $cerPath | Out-Null
-
+#
+# Write-Host "[INFO] Exportando certificados..." -ForegroundColor Green
+# $securePass = ConvertTo-SecureString $pfxPassword -AsPlainText -Force
+#
+# Export-PfxCertificate -Cert $cert -FilePath $pfxPath -Password $securePass | Out-Null
+# Export-Certificate    -Cert $cert -FilePath $cerPath | Out-Null
+#
 # ================= INSTALAR EN ROOT =================
-
-Write-Host "[INFO] Instalando certificado en Root (usuario actual)..." -ForegroundColor Green
-try {
-    Import-Certificate -FilePath $cerPath -CertStoreLocation "Cert:\CurrentUser\Root" | Out-Null
-} catch {
-    Write-Warning "[WARN] No se pudo instalar en Root. Ejecuta PowerShell como administrador si deseas confianza total."
-}
+#
+# Write-Host "[INFO] Instalando certificado en Root (usuario actual)..." -ForegroundColor Green
+# try {
+#     Import-Certificate -FilePath $cerPath -CertStoreLocation "Cert:\CurrentUser\Root" | Out-Null
+# } catch {
+#     Write-Warning "[WARN] No se pudo instalar en Root. Ejecuta PowerShell como administrador si deseas confianza total."
+# }
 
 # ================= FIRMAR EXE =================
 
@@ -92,7 +92,8 @@ if (-not (Test-Path $exePath)) {
 
 $signtool = Get-Signtool
 
-Write-Host "[INFO] Firmando Image_Converter.exe..." -ForegroundColor Yellow
+$exeFilename = Split-Path -Path $exePath -Leaf
+Write-Host "[INFO] Firmando $exeFilename..." -ForegroundColor Yellow
 & $signtool sign `
     /f $pfxPath `
     /p $pfxPassword `
@@ -106,5 +107,5 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
-Write-Host "[OK] Image_Converter.exe firmado correctamente." -ForegroundColor Green
+Write-Host "[OK] $exeFilename firmado correctamente." -ForegroundColor Green
 Write-Host "[SUCCESS] Proceso finalizado con exito." -ForegroundColor Green

@@ -242,7 +242,7 @@ El ejecutable distribuido está **firmado digitalmente**, lo que garantiza:
 **Pablo Téllez**  
 Desarrollador de Software  
 
-📍 Tarija, Bolivia <img src="https://flagcdn.com/w20/bo.png" width="20"/> 
+📍 Tarija, Bolivia <img src="https://flagcdn.com/w20/bo.png" width="20"/> <br>
 📧 [pharmakoz@gmail.com](mailto:pharmakoz@gmail.com) 
 
 © 2026 — Image Converter

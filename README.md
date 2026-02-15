@@ -239,7 +239,7 @@ El ejecutable distribuido está **firmado digitalmente**, lo que garantiza:
 
 ## 👨‍💻 Autor
 
-**Pablo Téllez** 🇧🇴  
+**Pablo Téllez** :flag-bo:  
 Desarrollador de Software  
 
 📍 Tarija, Bolivia  

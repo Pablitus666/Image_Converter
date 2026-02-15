@@ -28,3 +28,6 @@ dist_installer/*.zip
 # Compressed files
 *.rar
 *.zip
+
+# Temporary files
+assets/images/Captura de pantalla (*).png
